@@ -463,7 +463,7 @@
         <span class="sec-tag">The tool</span>
         <h2 class="sec-h" style="color:var(--ink); font-size:clamp(2.2rem, 4vw, 3.2rem); margin-bottom: 20px;">Explore climate vulnerability<br>in your region</h2>
         <p style="font-size:1rem;color:var(--mid);max-width:560px;line-height:1.65;margin-bottom:0">
-            Select a province, then a municipality to see neighborhood-level vulnerability across five themes — and receive targeted intervention recommendations.
+            Select a province, then a municipality to see neighborhood-level vulnerability across five themes - and receive targeted intervention recommendations.
         </p>
 
         <!-- Wizard Tabs -->
@@ -500,7 +500,6 @@
                     <option value="theme_heat">Rank by: Heat Exposure</option>
                     <option value="theme_populations">Rank by: Vulnerable Populations</option>
                     <option value="theme_socioeconomic">Rank by: Socioeconomic Deprivation</option>
-                    <option value="theme_mental_health">Rank by: Mental Health</option>
                     <option value="theme_built_environment_access">Rank by: Built Environment & Access</option>
                 </select>
             </div>
@@ -526,7 +525,6 @@
                         <option value="theme_heat">Sort by: Heat Exposure</option>
                         <option value="theme_populations">Sort by: Vulnerable Populations</option>
                         <option value="theme_socioeconomic">Sort by: Socioeconomic Deprivation</option>
-                        <option value="theme_mental_health">Sort by: Mental Health</option>
                         <option value="theme_built_environment_access">Sort by: Built Environment & Access</option>
                     </select>
                 </div>
@@ -651,7 +649,6 @@ const THEMES = [
     {key:'theme_heat',          short:'Heat',       label:'Heat Exposure',           color:'#c94a35'},
     {key:'theme_populations',   short:'Popul.',     label:'Vulnerable Populations',  color:'#7e5a9b'},
     {key:'theme_socioeconomic', short:'Socio.',     label:'Socioeconomic',           color:'#c27728'},
-    {key:'theme_mental_health', short:'Mental',     label:'Mental Health',           color:'#1aab9f'},
     {key:'theme_built_environment_access', short:'Built+', label:'Built Environment & Access', color:'#3a7baa'},
 ];
 
@@ -659,7 +656,6 @@ const RAMPS = {
     theme_heat:         ['#fdfff7','#fbd9cc','#e58060','#c94a35','#3a2e39'],
     theme_populations:  ['#fdfff7','#e2c6f2','#b271d6','#76319b','#3a2e39'],
     theme_socioeconomic:['#fdfff7','#faebd6','#e0a840','#c27728','#3a2e39'],
-    theme_mental_health:['#fdfff7','#c8eeea','#50c8be','#1aab9f','#3a2e39'],
     theme_built_environment_access:['#fdfff7','#cce3f0','#68b0d8','#3a7baa','#3a2e39'],
     composite:          ['#fdfff7','#c8eeea','#1aab9f','#c94a35','#3a2e39'],
 };
@@ -691,12 +687,6 @@ const INTERVENTIONS = {
         {type:'Housing',name:'Targeted home insulation subsidies',desc:'Offer income-based grants for low-cost heat adaptation: internal blinds, door and window sealing, and secondary glazing for pre-2000 housing stock in deprived neighbourhoods.'},
         {type:'Services',name:'Multilingual heat communication',desc:'Translate all heat-health alerts and guidance into the top five community languages. Use WhatsApp, community radio, and trusted local organisations to reach residents with limited digital access.'},
         {type:'Policy',name:'Landlord minimum heat standards',desc:'Introduce a local ordinance requiring landlords to ensure rental properties meet minimum indoor thermal comfort standards, with enforcement through existing housing inspection routes.'},
-    ]},
-    theme_mental_health:{label:'Mental Health & Social Isolation',color:'#25938f',items:[
-        {type:'Services',name:'Social prescribing: green spaces',desc:'Train GPs to issue prescriptions for regular visits to local parks and community gardens for patients experiencing stress, loneliness, or depression — particularly effective during hot periods.'},
-        {type:'Services',name:'Community health worker programme',desc:'Deploy community health workers with dual mental health and heat-health training into high-stress, high-loneliness neighbourhoods for year-round preventative outreach.'},
-        {type:'Infrastructure',name:'Shaded community garden network',desc:'Develop a network of accessible, shaded community gardens and social spaces. Green social infrastructure reduces stress biomarkers while providing outdoor cooling for residents.'},
-        {type:'Policy',name:'Integrated loneliness and heat risk mapping',desc:'Cross-reference loneliness prevalence data with heat exposure scores to identify the highest-priority neighbourhoods for compound mental-heat health interventions.'},
     ]},
     theme_built_environment_access:{label:'Built Environment & Access',color:'#3a2e39',items:[
         {type:'Infrastructure',name:'Shaded public routes and stops',desc:'Install shade structures over key pedestrian routes, cycle paths, and bus stops in neighbourhoods dominated by pre-2010 housing. Prioritise routes used by elderly and mobility-limited residents.'},
