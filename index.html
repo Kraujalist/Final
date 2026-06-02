@@ -512,7 +512,7 @@
         backdrop-filter:blur(8px);
     }
     .legend-title{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
-    .legend-ramp{height:8px;border-radius:999px;background:linear-gradient(90deg,#fdfff7,#c8eeea,#1aab9f,#c94a35,#3a2e39);border:1px solid rgba(58,46,57,.12)}
+    .legend-ramp{height:8px;border-radius:999px;background:linear-gradient(90deg,#fefefa,#FF7700,#A30000,#0a0a0a);border:1px solid rgba(58,46,57,.12)}
     .legend-scale{display:flex;justify-content:space-between;margin-top:6px;font-family:var(--mono);font-size:.54rem;color:var(--light)}
 
     /* Theme tabs */
@@ -1192,7 +1192,7 @@ const THEMES = [
     COMPOSITE_THEME,
     {key:'theme_heat',          short:'Heat',       label:'Heat Exposure',           color:'#c94a35'},
     {key:'theme_populations',   short:'Popul.',     label:'Vulnerable Populations',  color:'#7e5a9b'},
-    {key:'theme_socioeconomic', short:'Socio.',     label:'Socioeconomic',           color:'#c27728'},
+    {key:'theme_socioeconomic', short:'Socio.',     label:'Socioeconomic',           color:'#024f3b'},
     {key:'theme_built_environment_access', short:'Built+', label:'Built Environment & Access', color:'#3a7baa'},
 ];
 const DRIVER_THEMES = THEMES.filter(t => t.key !== 'composite');
@@ -1200,9 +1200,9 @@ const DRIVER_THEMES = THEMES.filter(t => t.key !== 'composite');
 const RAMPS = {
     theme_heat:         ['#fdfff7','#fbd9cc','#e58060','#c94a35','#3a2e39'],
     theme_populations:  ['#fdfff7','#e2c6f2','#b271d6','#76319b','#3a2e39'],
-    theme_socioeconomic:['#fdfff7','#faebd6','#e0a840','#c27728','#3a2e39'],
+    theme_socioeconomic:['#fefefa','#024f3b','#0a0a0a'],
     theme_built_environment_access:['#fdfff7','#cce3f0','#68b0d8','#3a7baa','#3a2e39'],
-    composite:          ['#fdfff7','#c8eeea','#1aab9f','#c94a35','#3a2e39'],
+    composite:          ['#fefefa','#FF7700','#A30000','#0a0a0a'],
 };
 
 function scoreValue(props, key) {
@@ -1675,7 +1675,7 @@ async function loadGeoData() {
         });
 
         const statusEl = document.getElementById('dataStatus');
-        statusEl.innerHTML = `${geoData.features.length.toLocaleString()} neighborhoods loaded — select a province to begin`;
+        statusEl.innerHTML = `11,734 neighborhoods loaded — select a province to begin`;
             
         renderProvinceGrid();
 
