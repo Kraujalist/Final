@@ -742,7 +742,7 @@
     .more-info-btn { width: 100%; margin-top: 12px; padding: 10px; background: var(--accent-pale); border: 1px solid rgba(37,147,143,.4); color: var(--accent-strong); border-radius: 6px; cursor: pointer; font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; transition: 0.2s; font-weight: 500; }
     .more-info-btn:hover { background: var(--accent); color: var(--paper); border-color: var(--accent); }
     
-    /* Scenario year slider (under map) */
+    /* Scenario year selector (under map) */
     .scenario-slider-wrap {
         margin: 14px 0 12px;
         padding: 14px 16px;
@@ -772,27 +772,38 @@
         letter-spacing: 0.06em;
         color: var(--accent-strong);
     }
-    .scenario-slider-control { position: relative; padding: 0 4px 22px; }
-    .scenario-slider-control input[type="range"] {
-        width: 100%;
-        margin: 0;
-        accent-color: var(--accent-strong);
-        cursor: pointer;
+    .scenario-slider-control { position: relative; padding: 0; }
+    .scenario-year-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
     }
-    .scenario-slider-ticks {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 6px;
+    .scenario-year-btn {
+        min-height: 36px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--paper);
+        color: var(--light);
+        cursor: pointer;
         font-family: var(--mono);
         font-size: 0.62rem;
         letter-spacing: 0.06em;
         text-transform: uppercase;
-        color: var(--light);
+        transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
     }
-    .scenario-slider-ticks span { transition: color 0.2s, font-weight 0.2s; }
-    .scenario-slider-ticks span.on { color: var(--ink); font-weight: 600; }
+    .scenario-year-btn:hover {
+        border-color: rgba(37, 147, 143, 0.45);
+        color: var(--accent-strong);
+        transform: translateY(-1px);
+    }
+    .scenario-year-btn.on {
+        border-color: var(--accent);
+        background: var(--accent-pale);
+        color: var(--ink);
+        font-weight: 700;
+    }
     .scenario-disclaimer {
-        margin: -2px 2px 0;
+        margin: 8px 2px 0;
         font-family: var(--mono);
         font-size: 0.58rem;
         line-height: 1.45;
@@ -959,6 +970,7 @@
             <div class="panel-header-row">
                 <h3 style="font-family:var(--serif);font-size:1.6rem; margin:0; color:var(--ink);">Select your province</h3>
                     <select id="provSort" style="margin: 0;">
+                        <option value="alphabetical">Sort Provinces by: A-Z</option>
                         <option value="composite">Rank Provinces by: Composite Risk</option>
                         <option value="theme_heat">Rank by: Heat Exposure</option>
                         <option value="theme_populations">Rank by: Vulnerable Populations</option>
@@ -984,6 +996,7 @@
                 <div class="muni-controls" style="flex-wrap:wrap">
                     <input type="search" id="muniSearch" class="muni-search" placeholder="Filter municipalities…" aria-label="Filter municipalities">
                     <select id="muniSort">
+                        <option value="alphabetical">Sort by: A-Z</option>
                         <option value="composite">Sort by: Composite Risk</option>
                         <option value="theme_heat">Sort by: Heat Exposure</option>
                         <option value="theme_populations">Sort by: Vulnerable Populations</option>
@@ -1034,11 +1047,10 @@
                             <span class="scenario-slider-value" id="scenarioSliderValue">2024</span>
                         </div>
                         <div class="scenario-slider-control">
-                            <input type="range" id="scenarioSlider" min="0" max="2" step="1" value="0" aria-valuemin="2024" aria-valuemax="2100" aria-valuenow="2024" aria-label="Projection year" aria-describedby="scenarioDisclaimer">
-                            <div class="scenario-slider-ticks" id="scenarioSliderTicks">
-                                <span class="on" data-year="2024">2024</span>
-                                <span data-year="2050">2050</span>
-                                <span data-year="2100">2100</span>
+                            <div class="scenario-year-buttons" id="scenarioYearButtons" role="group" aria-label="Projection year options" aria-describedby="scenarioDisclaimer">
+                                <button type="button" class="scenario-year-btn on" data-scenario-year="2024" aria-pressed="true">2024</button>
+                                <button type="button" class="scenario-year-btn" data-scenario-year="2050" aria-pressed="false">2050</button>
+                                <button type="button" class="scenario-year-btn" data-scenario-year="2100" aria-pressed="false">2100</button>
                             </div>
                         </div>
                         <p class="scenario-disclaimer" id="scenarioDisclaimer">
@@ -1506,8 +1518,8 @@ let activeMuni = null;
 let activeMuniFeats = null;
 let activeTheme = THEMES[0]; // Defaults to Composite Risk
 let activeScenarioYear = '2024';
-let currentProvSortTheme = 'composite'; 
-let currentMuniSortTheme = 'composite'; 
+let currentProvSortTheme = 'alphabetical'; 
+let currentMuniSortTheme = 'alphabetical'; 
 let rMap = null, rLayer = null;
 let layerMap = {};
 
@@ -1598,16 +1610,12 @@ document.addEventListener('click', e => {
 function setScenarioYear(year) {
     if (!SCENARIO_YEARS.includes(year)) return;
     activeScenarioYear = year;
-    const idx = SCENARIO_YEARS.indexOf(year);
-    const slider = document.getElementById('scenarioSlider');
     const valueEl = document.getElementById('scenarioSliderValue');
-    if (slider) {
-        slider.value = String(idx);
-        slider.setAttribute('aria-valuenow', year);
-    }
     if (valueEl) valueEl.textContent = year;
-    document.querySelectorAll('#scenarioSliderTicks span').forEach(span => {
-        span.classList.toggle('on', span.dataset.year === year);
+    document.querySelectorAll('[data-scenario-year]').forEach(btn => {
+        const isActive = btn.dataset.scenarioYear === year;
+        btn.classList.toggle('on', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
     });
     refreshScenarioViews();
 }
@@ -1625,15 +1633,8 @@ function refreshScenarioViews() {
     }
 }
 
-const scenarioSliderEl = document.getElementById('scenarioSlider');
-if (scenarioSliderEl) {
-    scenarioSliderEl.addEventListener('input', () => {
-        setScenarioYear(SCENARIO_YEARS[Number(scenarioSliderEl.value)]);
-    });
-}
-document.querySelectorAll('#scenarioSliderTicks span').forEach(span => {
-    span.addEventListener('click', () => setScenarioYear(span.dataset.year));
-    span.style.cursor = 'pointer';
+document.querySelectorAll('[data-scenario-year]').forEach(btn => {
+    btn.addEventListener('click', () => setScenarioYear(btn.dataset.scenarioYear));
 });
 setScenarioYear('2024');
 
@@ -1693,8 +1694,9 @@ function renderProvinceGrid() {
     
     let sortedProvs = [...PROVINCES];
     
-    // Sort logic only runs after data is loaded
-    if (geoData) {
+    if (currentProvSortTheme === 'alphabetical') {
+        sortedProvs.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (geoData) {
         sortedProvs.sort((a,b) => {
             const scoreA = currentProvSortTheme === 'composite' ? a.avgRisk : a.themes[currentProvSortTheme];
             const scoreB = currentProvSortTheme === 'composite' ? b.avgRisk : b.themes[currentProvSortTheme];
@@ -1711,7 +1713,7 @@ function renderProvinceGrid() {
         let scoreHtml = '';
         let rankText = p.code; 
         
-        if (geoData && p.avgRisk !== undefined) {
+        if (geoData && p.avgRisk !== undefined && currentProvSortTheme !== 'alphabetical') {
             const displayScore = currentProvSortTheme === 'composite' ? p.avgRisk : p.themes[currentProvSortTheme];
             scoreHtml = `<span class="prov-score">${Math.round(displayScore)}</span>`;
             rankText = `${idx + 1} · ${p.code}`; // Prepend rank
@@ -1778,17 +1780,18 @@ function renderMuniList() {
         const worst = worstThemes(gm, 2);
         const displayScore = currentMuniSortTheme === 'composite' ? gm.avgRisk : gm.themes[currentMuniSortTheme];
         const rankIndex = rankings.indexOf(gm) + 1;
+        const isAlphabetical = currentMuniSortTheme === 'alphabetical';
 
         const card = document.createElement('button');
         card.className = 'muni-card';
         card.style.animationDelay = `${Math.min(i * 0.025, 0.28)}s`;
         card.innerHTML = `
-            <span class="mc-rank">${rankIndex}</span>
+            <span class="mc-rank">${isAlphabetical ? '' : rankIndex}</span>
             <span class="mc-name">${escapeHtml(gm.name)}</span>
             <div class="mc-badges">
                 ${worst.map(t => `<span class="mc-badge" style="background:${t.color}">${t.short}</span>`).join('')}
             </div>
-            <span class="mc-score">${Math.round(displayScore)}</span>`;
+            ${isAlphabetical ? '' : `<span class="mc-score">${Math.round(displayScore)}</span>`}`;
         card.addEventListener('click', () => selectMuni(gm.name));
         list.appendChild(card);
     });
@@ -1814,6 +1817,7 @@ function rankGemeenten(gemeenten, sortTheme) {
         };
         return gmData;
     }).filter(Boolean).sort((a,b) => {
+        if (sortTheme === 'alphabetical') return a.name.localeCompare(b.name);
         const scoreA = sortTheme === 'composite' ? a.avgRisk : a.themes[sortTheme];
         const scoreB = sortTheme === 'composite' ? b.avgRisk : b.themes[sortTheme];
         return scoreB - scoreA; 
