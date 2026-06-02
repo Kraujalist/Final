@@ -11,18 +11,7 @@
     <style>
         body { background: linear-gradient(180deg, #fdfff7 0%, var(--paper) 35%, rgba(37,147,143,.08) 100%); line-height: 1.7; overflow-x: hidden; }
         
-        /* ── HERO ── */
-        .hero { position: relative; background: linear-gradient(165deg, #3a2e39 0%, #2f2630 45%, #211a20 100%); color: #fdfff7; padding: 120px 40px 88px; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 75% 55% at 75% 35%, rgba(37,147,143,0.14) 0%, transparent 60%), radial-gradient(ellipse 45% 70% at 12% 85%, rgba(145,39,46,0.10) 0%, transparent 55%); }
-        /* Decorative heat rings */
-        .hero::after { content: ''; position: absolute; right: -80px; top: 50%; transform: translateY(-50%); width: 400px; height: 400px; border-radius: 50%; border: 1px solid rgba(37,147,143,0.14); box-shadow: 0 0 0 40px rgba(37,147,143,0.06), 0 0 0 80px rgba(37,147,143,0.035), 0 0 0 120px rgba(37,147,143,0.025); }
-        .hero-inner { position: relative; max-width: 920px; margin: 0 auto; z-index: 1; }
-        .hero-label { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: #25938f; border: 1px solid rgba(37,147,143,0.42); padding: 6px 16px; border-radius: 999px; margin-bottom: 32px; opacity: 0; animation: fadeUp 0.6s ease 0.1s forwards; }
-        .hero-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease infinite; }
         @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-        .hero h1 { font-family: var(--serif); font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.08; margin-bottom: 28px; opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards; }
-        .hero h1 em { font-style: italic; color: #91272e; }
-        .hero p { font-size: 1.08rem; color: rgba(253,255,247,0.78); max-width: 520px; line-height: 1.75; opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards; }
 
         /* ── STICKY TABS ── */
         .sticky-nav { position: sticky; top: 58px; z-index: 99; background: rgba(255,255,255,0.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 0 40px; }
@@ -205,7 +194,6 @@
         @media (max-width: 680px) {
             .scenarios-grid { grid-template-columns: 1fr; }
             .formula-terms { grid-template-columns: 1fr 1fr; }
-            .hero::after { display: none; }
         }
         @media (max-width: 480px) {
             .formula-terms { grid-template-columns: 1fr; }
@@ -216,9 +204,9 @@
 </head>
 <body data-page="explain">
 
-<header class="hero">
-    <div class="hero-inner">
-        <div class="hero-label">Methodology & Science</div>
+<header class="page-hero">
+    <div class="page-hero-inner">
+        <p class="page-eyebrow">Methodology &amp; Science</p>
         <h1>How <em>heat risk</em><br>is measured</h1>
         <p>The science behind predicting which Dutch neighborhoods face the greatest danger during heat waves—and why the answer isn't just temperature.</p>
     </div>
@@ -344,21 +332,21 @@
         <div class="scenarios-grid">
             <div class="scenario-card" style="border-top: 4px solid var(--c-heat)">
                 <div class="scenario-year" style="color: var(--c-heat);">Theme 01</div>
-                <div class="theme-icon" style="background: rgba(201,74,53,0.12); color: var(--c-heat);">🌡️</div>
+                <div class="theme-icon" style="background: rgba(201,74,53,0.12); color: var(--c-heat);">HEAT</div>
                 <div class="scenario-title">Heat Exposure</div>
                 <div class="scenario-desc"><strong>What it measures:</strong> Physical biometric heat stress. We use Perceived Equivalent Temperature (PET), a biometric standard that factors in solar radiation, wind speed, and humidity alongside the RIVM national risk classification.</div>
             </div>
 
             <div class="scenario-card" style="border-top: 4px solid var(--c-pop)">
                 <div class="scenario-year" style="color: var(--c-pop);">Theme 02</div>
-                <div class="theme-icon" style="background: rgba(126,90,155,0.12); color: var(--c-pop);">👥</div>
+                <div class="theme-icon" style="background: rgba(126,90,155,0.12); color: var(--c-pop);">POP</div>
                 <div class="scenario-title">Vulnerable Populations</div>
                 <div class="scenario-desc"><strong>What it measures:</strong> People with limited physiological or social resilience. It ranks the concentration of elderly (65+), children (0–14), self-reported physical frailty, and single-person households—a key indicator of social isolation.</div>
             </div>
 
             <div class="scenario-card" style="border-top: 4px solid var(--c-socio)">
                 <div class="scenario-year" style="color: var(--c-socio);">Theme 03</div>
-                <div class="theme-icon" style="background: rgba(194,119,40,0.12); color: var(--c-socio);">💶</div>
+                <div class="theme-icon" style="background: rgba(194,119,40,0.12); color: var(--c-socio);">SOC</div>
                 <div class="scenario-title">Socioeconomic Deprivation</div>
                 <div class="scenario-desc"><strong>What it measures:</strong> Financial barriers. Low-income residents cannot afford AC, high electricity bills, or better insulation. Dependency on rental housing means residents legally cannot modify their structures to protect themselves.</div>
             </div>
@@ -366,7 +354,7 @@
             <div class="scenario-card" style="border-top: 4px solid var(--c-built)">
                 <div class="scenario-year" style="color: var(--c-built);">Theme 04</div>
                 <div class="scenario-year" style="color: var(--c-built);">Theme 04</div>
-                <div class="theme-icon" style="background: rgba(58,123,170,0.12); color: var(--c-built);">🏗️</div>
+                <div class="theme-icon" style="background: rgba(58,123,170,0.12); color: var(--c-built);">BUILT</div>
                 <div class="scenario-title">Built Environment &amp; Access</div>
                 <div class="scenario-desc"><strong>What it measures:</strong> The combined physical and service-access context: shade, dense addresses, older homes, distance to GP practices and cooling spaces, gas or electric heating profiles, traffic noise, housing satisfaction, green-space satisfaction, and ability to find cooling indoors or outdoors.</div>
             </div>

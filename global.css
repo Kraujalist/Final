@@ -54,6 +54,92 @@ body{
 .sec-h{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;line-height:1.15;margin-bottom:14px}
 .sec-sub{font-size:1rem;color:var(--mid);max-width:580px;line-height:1.65;margin-bottom:52px}
 
+/* Shared Page Hero */
+.page-hero{
+    position:relative;
+    margin-top:58px;
+    padding:112px 40px 82px;
+    overflow:hidden;
+    color:var(--paper);
+    background:linear-gradient(165deg,#3a2e39 0%,#2f2630 48%,#211a20 100%);
+}
+.page-hero::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(ellipse 75% 55% at 75% 35%,rgba(37,147,143,.14) 0%,transparent 60%),
+        radial-gradient(ellipse 45% 70% at 12% 85%,rgba(145,39,46,.10) 0%,transparent 55%);
+    pointer-events:none;
+}
+.page-hero::after{
+    content:'';
+    position:absolute;
+    right:-80px;
+    top:50%;
+    width:400px;
+    height:400px;
+    border:1px solid rgba(37,147,143,.14);
+    border-radius:50%;
+    box-shadow:0 0 0 40px rgba(37,147,143,.06),0 0 0 80px rgba(37,147,143,.035),0 0 0 120px rgba(37,147,143,.025);
+    transform:translateY(-50%);
+    pointer-events:none;
+}
+.page-hero-inner{
+    position:relative;
+    z-index:1;
+    max-width:var(--w);
+    margin:0 auto;
+    animation:fadeLift .7s ease both;
+}
+.page-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    margin:0 0 28px;
+    padding:6px 16px;
+    border:1px solid rgba(37,147,143,.42);
+    border-radius:999px;
+    color:#6ed0ca;
+    font-family:var(--mono);
+    font-size:.72rem;
+    font-weight:600;
+    letter-spacing:.16em;
+    line-height:1.2;
+    text-transform:uppercase;
+}
+.page-eyebrow::before{
+    content:'';
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 18px rgba(37,147,143,.55);
+    flex:0 0 auto;
+}
+.page-hero h1{
+    max-width:760px;
+    margin:0 0 24px;
+    color:var(--paper);
+    font-family:var(--serif);
+    font-size:clamp(2.8rem,5.2vw,5.05rem);
+    font-weight:700;
+    line-height:1.04;
+}
+.page-hero h1 em{
+    color:var(--heat);
+    font-style:italic;
+    font-weight:600;
+}
+.page-hero p:not(.page-eyebrow){
+    max-width:640px;
+    margin:0;
+    color:rgba(253,255,247,.78);
+    font-size:1.06rem;
+    font-weight:600;
+    line-height:1.72;
+}
+
 /* Main Navigation */
 nav.top-nav {
     position:fixed;top:0;left:0;right:0;height:58px;
@@ -113,4 +199,9 @@ footer a:hover{color:#fdfff7}
     animation: spin 1s linear infinite;
     margin-right: 8px;
     vertical-align: middle;
+}
+
+@media(max-width:680px){
+    .page-hero{padding:92px 22px 62px}
+    .page-hero::after{display:none}
 }

@@ -93,43 +93,6 @@ footer a:hover{color:#fdfff7}
     --purple:var(--ink);
 }
 body{overflow-x:hidden;background:var(--paper);}
-.hero{
-    position:relative;
-    margin-top:58px;
-    min-height:430px;
-    padding:98px 32px 76px;
-    overflow:hidden;
-    color:var(--paper);
-    background:
-        radial-gradient(ellipse 70% 75% at 92% 42%, rgba(37,147,143,.07) 0%, transparent 55%),
-        linear-gradient(150deg,#3a2e39 0%,#2e2630 50%,#211a20 100%);
-}
-.hero::before{
-    content:'';
-    position:absolute;inset:0;
-    background:radial-gradient(ellipse 55% 70% at 70% 24%, rgba(145,39,46,.10) 0%, transparent 56%);
-    pointer-events:none;
-}
-.hero::after{
-    content:'';
-    position:absolute;
-    right:-90px;top:50%;transform:translateY(-50%);
-    width:430px;height:430px;border-radius:50%;
-    border:1px solid rgba(37,147,143,.12);
-    box-shadow:0 0 0 52px rgba(37,147,143,.055),0 0 0 104px rgba(253,255,247,.025),0 0 0 156px rgba(58,46,57,.18);
-    pointer-events:none;
-}
-.hero-inner{max-width:1180px;margin:0 auto;position:relative;z-index:1;animation:fadeLift .7s ease both;}
-.hero-label{
-    display:inline-flex;align-items:center;gap:9px;
-    font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
-    color:rgba(37,147,143,.92);border:1px solid rgba(37,147,143,.36);
-    background:rgba(58,46,57,.22);padding:7px 16px;border-radius:999px;margin-bottom:30px;
-}
-.hero-label::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 18px rgba(37,147,143,.55);}
-.hero h1{font-family:var(--serif);font-size:clamp(2.8rem,5.2vw,5.05rem);line-height:1.03;letter-spacing:-.045em;margin-bottom:24px;max-width:760px;color:#fdfff7;}
-.hero h1 em{font-style:italic;color:var(--heat);font-weight:600;}
-.hero p{font-size:1.06rem;line-height:1.72;color:rgba(253,255,247,.76);max-width:620px;font-weight:600;}
 .sticky-nav{
     position:sticky;top:58px;z-index:99;
     background:rgba(253,255,247,.92);backdrop-filter:saturate(1.2) blur(14px);
@@ -211,7 +174,7 @@ code{font-family:var(--mono);font-size:.85em;background:var(--warm);padding:1px 
 footer strong{color:var(--paper);}
 footer p{line-height:1.8;}
 @media(max-width:900px){.pipeline{grid-template-columns:1fr 1fr}.score-legend,.score-compare,.note-row{grid-template-columns:1fr}.themes-grid,.split-grid{grid-template-columns:1fr}.theme-flip,.theme-flip-inner{min-height:330px}}
-@media(max-width:680px){.hero{padding:92px 22px 62px}.hero::after{display:none}.container{padding:0 22px 84px}.section{padding-top:62px}.sticky-nav{padding:0 18px}.sticky-nav-inner{justify-content:flex-start}.pipeline{grid-template-columns:1fr}.score-spotlight{padding:30px 24px}.theme-flip,.theme-flip-inner{min-height:380px}}
+@media(max-width:680px){.container{padding:0 22px 84px}.section{padding-top:62px}.sticky-nav{padding:0 18px}.sticky-nav-inner{justify-content:flex-start}.pipeline{grid-template-columns:1fr}.score-spotlight{padding:30px 24px}.theme-flip,.theme-flip-inner{min-height:380px}}
 
     </style>
 </head>
@@ -219,9 +182,9 @@ footer p{line-height:1.8;}
 
 <div data-nav-mount></div>
 
-<header class="hero">
-    <div class="hero-inner">
-        <div class="hero-label">Methodology &amp; Science</div>
+<header class="page-hero">
+    <div class="page-hero-inner">
+        <p class="page-eyebrow">Methodology &amp; Science</p>
         <h1>How <em>health risk</em><br>is measured</h1>
         <p>This page explains how neighbourhood data is transformed into theme scores, how the model combines them, and how present and future heat-health vulnerability should be interpreted.</p>
     </div>

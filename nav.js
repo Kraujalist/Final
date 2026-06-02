@@ -1,6 +1,6 @@
 (function () {
     const NAV_LINKS = [
-        { href: 'dashboard.html', label: 'Dashboard', pageId: 'dashboard' },
+        { href: 'dashboard.html', label: 'National map', pageId: 'dashboard' },
         { href: 'methodology.html', label: 'Methodology', pageId: 'methodology' },
         { href: 'background.html', label: 'Background', pageId: 'background' },
         { href: 'sources.html', label: 'Sources', pageId: 'sources' },

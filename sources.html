@@ -11,44 +11,6 @@
     <style>
         body { overflow-x: hidden; background: var(--paper); }
         
-        /* ── HERO ── */
-        .hero {
-            position: relative;
-            margin-top: 58px;
-            min-height: 380px;
-            padding: 98px 32px 76px;
-            overflow: hidden;
-            color: var(--paper);
-            background:
-                radial-gradient(ellipse 70% 75% at 92% 42%, rgba(37,147,143,.07) 0%, transparent 55%),
-                linear-gradient(150deg,#3a2e39 0%,#2e2630 50%,#211a20 100%);
-        }
-        .hero::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse 55% 70% at 70% 24%, rgba(145,39,46,.10) 0%, transparent 56%);
-            pointer-events: none;
-        }
-        .hero::after {
-            content: '';
-            position: absolute;
-            right: -90px; top: 50%; transform: translateY(-50%);
-            width: 430px; height: 430px; border-radius: 50%;
-            border: 1px solid rgba(37,147,143,.12);
-            box-shadow: 0 0 0 52px rgba(37,147,143,.055), 0 0 0 104px rgba(253,255,247,.025), 0 0 0 156px rgba(58,46,57,.18);
-            pointer-events: none;
-        }
-        .hero-inner { max-width: 1180px; margin: 0 auto; position: relative; z-index: 1; animation: fadeLift .7s ease both; }
-        .hero-label {
-            display: inline-flex; align-items: center; gap: 9px;
-            font-family: var(--mono); font-size: .68rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
-            color: rgba(37,147,143,.92); border: 1px solid rgba(37,147,143,.36);
-            background: rgba(58,46,57,.22); padding: 7px 16px; border-radius: 999px; margin-bottom: 30px;
-        }
-        .hero-label::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-        .hero h1 { font-family: var(--serif); font-size: clamp(2.8rem, 5.2vw, 5.05rem); line-height: 1.03; letter-spacing: -.045em; margin-bottom: 24px; color: #fdfff7; }
-        .hero h1 em { font-style: italic; color: var(--heat); font-weight: 600; }
-        .hero p { font-size: 1.06rem; line-height: 1.72; color: rgba(253,255,247,.76); max-width: 620px; }
 
         /* ── SOURCE CONTENT LAYOUT ── */
         .container { max-width: 980px; margin: 0 auto; padding: 0 32px 108px; }
@@ -96,8 +58,6 @@
         .source-card:hover .source-link { background: var(--accent); color: var(--paper); }
 
         @media(max-width: 680px){
-            .hero { padding: 92px 22px 62px; }
-            .hero::after { display: none; }
             .container { padding: 0 22px 84px; }
             .section { padding-top: 62px; }
         }
@@ -105,9 +65,9 @@
 </head>
 <body data-page="sources">
 
-<header class="hero">
-    <div class="hero-inner">
-        <div class="hero-label">Data &amp; Learn more</div>
+<header class="page-hero">
+    <div class="page-hero-inner">
+        <p class="page-eyebrow">Data &amp; Learn more</p>
         <h1>Sources</h1>
         <p>If you want to learn more about the data sources and references used in this tool, please explore the links below.</p>
     </div>
@@ -122,7 +82,18 @@
             <h2>Data Sources</h2>
         </div>
         <div class="sources-list">
+            
+            <a href="https://www.cbs.nl" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-socio);">
+                <span class="source-meta">Centraal Bureau voor de Statistiek (CBS) · 2024</span>
+                <div class="source-title">Kerncijfers Wijken en Buurten</div>
+                <span class="source-link">Access Database &rarr;</span>
+            </a>
 
+            <a href="https://www.ggd.nl" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-pop);">
+                <span class="source-meta">Gemeentelijke Gezondheidsdienst (GGD) · 2024</span>
+                <div class="source-title">Nationale Gezondheidsmonitor</div>
+                <span class="source-link">Access Database &rarr;</span>
+            </a>
 
         </div>
     </section>
@@ -180,71 +151,8 @@
             <h2>Interventions Sources  </h2>
         </div>
         <div class="sources-list">
-            <a href="https://doi.org/10.1016/j.enpol.2017.09.045" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-socio);">
-                <span class="source-meta">Filippini &amp; Kumar · 2024</span>
-                <div class="source-title">Determinants to the adoption of energy-efficient retrofits and the role of policy measures</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
 
-            <a href="https://doi.org/10.1016/j.buildenv.2014.08.027" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-built);">
-                <span class="source-meta">Van Hooff, Blocken, Hensen, &amp; Timmermans · 2014</span>
-                <div class="source-title">On the predicted effectiveness of climate adaptation measures for residential buildings</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
 
-            <a href="https://www.thelancet.com/journals/lanplh/article/PIIS2542-5196(25)00007-5/fulltext" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--accent);">
-                <span class="source-meta">Johar, Abdulsalam, Guo, et al. · 2025</span>
-                <div class="source-title">Community-based heat adaptation interventions for improving heat literacy, behaviours, and health outcomes: A systematic review</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
-
-            <a href="https://doi.org/10.3390/atmos9090353" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-heat);">
-                <span class="source-meta">Koopmans, Ronda, Steeneveld, Holtslag, &amp; Klein Tank · 2018</span>
-                <div class="source-title">Quantifying the effect of different urban planning strategies on heat stress for current and future climates in the agglomeration of The Hague (The Netherlands)</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
-
-            <a href="https://doi.org/10.15585/mmwr.mm7124a1" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-pop);">
-                <span class="source-meta">Mallen, Roach, Fox, et al. · 2022</span>
-                <div class="source-title">Extreme heat exposure: Access and barriers to cooling centers—Maricopa and Yuma counties, Arizona, 2010–2020</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
-
-            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12950271/" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--accent);">
-                <span class="source-meta">Nasari &amp; Marzouk · 2026</span>
-                <div class="source-title">A healthy cities agenda for extreme heat adaptation in urban settings</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
-
-            <a href="https://doi.org/10.1016/j.gloenvcha.2021.102446" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-socio);">
-                <span class="source-meta">Osberghaus &amp; Abeling · 2022</span>
-                <div class="source-title">Heat vulnerability and adaptation of low-income households in Germany</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
-
-            <a href="https://doi.org/10.1016/j.scs.2011.02.004" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-built);">
-                <span class="source-meta">Porritt, Shao, Cropper, &amp; Goodier · 2011</span>
-                <div class="source-title">Adapting dwellings for heat waves</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
-
-            <a href="https://www.publichealthontario.ca/-/media/Documents/H/2023/heat-related-harms-vulnerable-populations.pdf?rev=54551990bbd44c9faa6dd898c58b29bb&amp;sc_lang=en" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-pop);">
-                <span class="source-meta">Public Health Ontario · 2023</span>
-                <div class="source-title">Rapid Review: Interventions to mitigate heat-related harms among vulnerable populations</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
-
-            <a href="https://www.rivm.nl/klimaat-en-gezondheid/literatuur#macintyre" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--heat);">
-                <span class="source-meta">Rijksinstituut voor Volksgezondheid en Milieu (RIVM)</span>
-                <div class="source-title">Literatuur klimaatadaptatie</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
-
-            <a href="https://pure.tue.nl/ws/portalfiles/portal/170222368/Verboven_1368273_CME.pdf" target="_blank" rel="noopener" class="source-card" style="border-top-color: var(--c-heat);">
-                <span class="source-meta">Verboven / Eindhoven University of Technology · 2021</span>
-                <div class="source-title">The preferences and willingness to pay of urban residents in the Netherlands regarding Green-Based Solutions for heat adaption</div>
-                <span class="source-link">Read More &rarr;</span>
-            </a>
         </div>
     </section>
 

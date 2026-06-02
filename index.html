@@ -209,6 +209,30 @@
         box-shadow:var(--shadow-sm);
     }
     select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-pale)}
+    .sort-control{
+        display:inline-flex;align-items:center;gap:10px;
+        padding:8px 10px 8px 14px;border:1px solid rgba(37,147,143,.34);
+        border-radius:999px;background:rgba(37,147,143,.08);
+        box-shadow:0 8px 24px rgba(37,147,143,.12);
+    }
+    .sort-control-label{
+        font-family:var(--mono);font-size:.58rem;font-weight:700;
+        letter-spacing:.1em;text-transform:uppercase;color:var(--accent-strong);
+        white-space:nowrap;
+    }
+    .sort-control select{
+        min-width:230px;padding:9px 36px 9px 12px;border-color:rgba(37,147,143,.28);
+        border-radius:999px;background:var(--paper);font-weight:700;
+        box-shadow:none;appearance:none;
+    }
+    .sort-control::after{
+        content:'';
+        width:8px;height:8px;border-right:2px solid var(--accent-strong);border-bottom:2px solid var(--accent-strong);
+        transform:rotate(45deg);margin-left:-34px;margin-right:16px;margin-top:-3px;pointer-events:none;
+    }
+    .sort-control:focus-within{
+        border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-pale),0 12px 28px rgba(37,147,143,.16);
+    }
 
     /* Wizard Tabs */
     .wizard-tabs {
@@ -516,9 +540,9 @@
     .legend-scale{display:flex;justify-content:space-between;margin-top:6px;font-family:var(--mono);font-size:.54rem;color:var(--light)}
 
     /* Theme tabs */
-    .theme-tabs{display:flex;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;background:var(--paper);box-shadow:var(--shadow-sm)}
+    .theme-tabs{display:flex;border:1px solid var(--border);border-radius:var(--radius);overflow:visible;margin-bottom:14px;background:var(--paper);box-shadow:var(--shadow-sm)}
     .theme-tab{
-        position:relative;overflow:hidden;
+        position:relative;overflow:visible;
         flex:1;padding:9px 4px;background:transparent;border:none;border-right:1px solid var(--border);
         cursor:pointer;font-family:var(--mono);font-size:.56rem;letter-spacing:.06em;text-transform:uppercase;
         color:var(--light);transition:.15s;text-align:center;line-height:1.3;
@@ -527,6 +551,30 @@
     .theme-tab:hover{background:var(--warm)}
     .theme-tab.on{background:linear-gradient(135deg,#3a2e39,#2f2630);color:#fdfff7;animation:activeGlow 3.2s ease-in-out infinite}
     .t-dot{display:block;width:6px;height:6px;border-radius:50%;background:currentColor;margin:0 auto 4px}
+    .theme-label-row{display:inline-flex;align-items:center;justify-content:center;gap:4px;position:relative}
+    .theme-help{
+        position:relative;display:inline-flex;align-items:center;justify-content:center;
+        width:15px;height:15px;border-radius:50%;border:1px solid currentColor;
+        font-family:var(--mono);font-size:.5rem;font-weight:700;line-height:1;
+        opacity:.78;text-transform:none;letter-spacing:0;
+    }
+    .theme-help-text{
+        position:absolute;left:50%;bottom:calc(100% + 10px);z-index:700;
+        width:min(230px,72vw);padding:10px 12px;border-radius:8px;
+        background:var(--ink);color:var(--paper);border:1px solid rgba(253,255,247,.18);
+        box-shadow:var(--shadow-md);font-family:var(--sans);font-size:.72rem;font-weight:600;
+        line-height:1.45;letter-spacing:0;text-transform:none;text-align:left;
+        opacity:0;visibility:hidden;transform:translate(-50%,4px);transition:.16s ease;
+        pointer-events:none;
+    }
+    .theme-help-text::after{
+        content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);
+        border:6px solid transparent;border-top-color:var(--ink);
+    }
+    .theme-help:hover .theme-help-text,
+    .theme-tab:focus-visible .theme-help-text{
+        opacity:1;visibility:visible;transform:translate(-50%,0);
+    }
 
     /* Neighborhood ranking — full list, scrollable */
     .rank-scroll{max-height:min(50vh,420px);overflow-y:auto;padding-right:6px;margin-top:4px}
@@ -895,7 +943,7 @@
             <span class="hero-title-main">Neighbourhood level policy interventions</span>
             <em>Including climate and health data into municipal policymaking</em>
         </h1>
-        <p>Rising temperatures are becoming a growing challenge in the Netherlands, with consequences being experienced unequally amongst the population. This tool highlights climate-related health risks across four key themes, identifies the most vulnerable areas and suggests potential interventions to help policymakers and communities with addressing it effectively. </p>
+        <p>Rising temperatures are becoming a growing challenge in the Netherlands, with impacts varying across neighbourhoods due to local conditions and interventions. This tool highlights climate-related health risks across four key themes, identifies the most vulnerable areas and suggests potential interventions to help policymakers and communities with addressing it effectively. </p>
         <div class="hero-stats">
             <div>
                 <span class="stat-n">11,734</span>
@@ -922,7 +970,6 @@
 <!-- ═══════════ EXPLORER ═══════════ -->
 <section id="explorer">
     <div class="sec-inner">
-        <span class="sec-tag">The tool</span>
         <h2 class="sec-h" style="color:var(--ink); font-size:clamp(2.2rem, 4vw, 3.2rem); margin-bottom: 20px;">Explore climate vulnerability<br>in your region</h2>
         <p style="font-size:1rem;color:var(--mid);max-width:560px;line-height:1.65;margin-bottom:0">
             Search for a municipality or browse by province to see neighborhood-level vulnerability across four drivers plus a composite risk score - and receive targeted intervention recommendations.
@@ -969,6 +1016,8 @@
         <div class="wiz-panel active" id="panelProv">
             <div class="panel-header-row">
                 <h3 style="font-family:var(--serif);font-size:1.6rem; margin:0; color:var(--ink);">Select your province</h3>
+                <div class="sort-control">
+                    <label class="sort-control-label" for="provSort">Sort view</label>
                     <select id="provSort" style="margin: 0;">
                         <option value="alphabetical">Sort Provinces by: A-Z</option>
                         <option value="composite">Rank Provinces by: Composite Risk</option>
@@ -976,7 +1025,8 @@
                         <option value="theme_populations">Rank by: Vulnerable Populations</option>
                         <option value="theme_socioeconomic">Rank by: Socioeconomic Deprivation</option>
                         <option value="theme_built_environment_access">Rank by: Built Environment & Access</option>
-                </select>
+                    </select>
+                </div>
             </div>
             <!-- Data status -->
             <div class="data-status" id="dataStatus">
@@ -1187,13 +1237,43 @@ const PROVINCES = [
     {code:'FL',name:'Flevoland',    city:'Lelystad',   gemeenten:['Almere','Lelystad','Dronten','Zeewolde','Urk','Noordoostpolder']},
 ];
 
-const COMPOSITE_THEME = {key:'composite', short:'Risk', label:'Composite Risk Score', color:'#3a2e39'};
+const COMPOSITE_THEME = {
+    key:'composite',
+    short:'Risk',
+    label:'Composite Risk Score',
+    color:'#3a2e39',
+    help:'Combined heat-health risk score used to compare neighbourhood priority. Higher values mean more vulnerability relative to other neighbourhoods.'
+};
 const THEMES = [
     COMPOSITE_THEME,
-    {key:'theme_heat',          short:'Heat',       label:'Heat Exposure',           color:'#c94a35'},
-    {key:'theme_populations',   short:'Popul.',     label:'Vulnerable Populations',  color:'#7e5a9b'},
-    {key:'theme_socioeconomic', short:'Socio.',     label:'Socioeconomic',           color:'#024f3b'},
-    {key:'theme_built_environment_access', short:'Built+', label:'Built Environment & Access', color:'#3a7baa'},
+    {
+        key:'theme_heat',
+        short:'Heat',
+        label:'Heat Exposure',
+        color:'#c94a35',
+        help:'Shows exposure to heat stress, including temperature, shade, cooling access, and heat-absorbing surroundings.'
+    },
+    {
+        key:'theme_populations',
+        short:'Popul.',
+        label:'Vulnerable Populations',
+        color:'#7e5a9b',
+        help:'Shows where heat-sensitive residents are concentrated, such as older adults, children, and people with fragile health.'
+    },
+    {
+        key:'theme_socioeconomic',
+        short:'Socio.',
+        label:'Socioeconomic',
+        color:'#024f3b',
+        help:'Shows social and financial conditions that can limit adaptation, such as low income, poverty, employment, education, and housing constraints.'
+    },
+    {
+        key:'theme_built_environment_access',
+        short:'Built+',
+        label:'Built Environment & Access',
+        color:'#3a7baa',
+        help:'Shows physical environment and support access, including housing, shade, green space, cooling access, and distance to health services.'
+    },
 ];
 const DRIVER_THEMES = THEMES.filter(t => t.key !== 'composite');
 
@@ -1492,6 +1572,86 @@ const INTERVENTION_LIBRARY = [
             { title: 'Pros', body: 'Lowers financial barriers; encourages uptake of cooling measures; can target vulnerable and low-income households; flexible across many intervention types; can also cut energy use.' },
             { title: 'Cons', body: 'Requires substantial public funding; depends on awareness and uptake; older groups may be less likely to adopt some measures; without careful design, subsidies may reach higher-income households more often.' },
             { title: 'Where it fits best', body: 'Highly adaptable and can be tailored to priority groups such as low-income households, older residents, and people in heat-vulnerable housing.' },
+        ],
+    },
+    {
+        id: 'cool_centers',
+        name: 'Cool centers',
+        type: 'Public service',
+        timing: 'immediate',
+        cost: 2,
+        implementationSpeed: 4,
+        evidenceStrength: 4,
+        equityImpact: 5,
+        themes: ['theme_populations', 'theme_built_environment_access', 'theme_socioeconomic'],
+        themeFit: { theme_populations: 5, theme_built_environment_access: 4, theme_socioeconomic: 3 },
+        shortDesc: 'Open cooled public buildings where residents can seek safe relief during extreme heat, especially when home cooling is unavailable.',
+        sections: [
+            { title: 'Elaborated description', body: 'Cooling facilities are public spaces that provide a safe, temperature-controlled environment during extreme heat. They are often located in libraries, sports facilities, municipal buildings, or other public buildings with cooling. They can also provide water, basic assistance, and information. They are especially relevant for older adults, people with chronic health conditions, people without stable housing, and residents whose homes cannot stay cool.' },
+            { title: 'Price', body: 'Existing public buildings can often be used, so initial costs can be relatively low. Main costs are staffing, communication, electricity, opening hours, and coordination with local services.' },
+            { title: 'Pros', body: 'Protects people during heatwaves; can be implemented quickly; does not require new major infrastructure; can also strengthen community outreach and connect residents to support.' },
+            { title: 'Cons', body: 'Residents must know about and travel to the centres; effectiveness depends on accessibility, trust, opening hours, and use; it does not directly cool homes or outdoor spaces.' },
+            { title: 'Where it fits best', body: 'Most valuable in neighbourhoods with many vulnerable residents, limited home cooling, social isolation, or poor access to private cool spaces.' },
+        ],
+    },
+    {
+        id: 'educational_programs',
+        name: 'Educational programs',
+        type: 'Communication',
+        timing: 'immediate',
+        cost: 1,
+        implementationSpeed: 5,
+        evidenceStrength: 3,
+        equityImpact: 4,
+        themes: ['theme_populations', 'theme_socioeconomic'],
+        themeFit: { theme_populations: 5, theme_socioeconomic: 4 },
+        shortDesc: 'Share practical heat-health guidance through schools, care networks, local organisations, media, and targeted outreach.',
+        sections: [
+            { title: 'Elaborated description', body: 'Educational programmes help residents understand heat risks, recognise early symptoms of heat-related illness, and know what actions to take. They can include school lessons, flyers, social media, newspaper information, posters, phone calls, local meetings, and advice from health professionals. They can be tailored to older residents, children, outdoor workers, people with disabilities, and people without stable housing.' },
+            { title: 'Price', body: 'Relatively cost-effective because no new physical infrastructure is required, especially when digital communication and existing community channels are used.' },
+            { title: 'Pros', body: 'Can reach many people quickly; improves awareness; can be adapted to specific groups; can be implemented rapidly and combined with warning systems or cooling-centre campaigns.' },
+            { title: 'Cons', body: 'Depends on residents acting on the information; may miss socially isolated, language-barrier, or digitally excluded groups; knowledge alone may not help if people lack money, cooling, transport, or support.' },
+            { title: 'Where it fits best', body: 'Useful across most municipalities, especially where vulnerable populations, social isolation, or low adaptive capacity are important drivers.' },
+        ],
+    },
+    {
+        id: 'heat_warning_systems',
+        name: 'Heat warning systems',
+        type: 'Warning system',
+        timing: 'immediate',
+        cost: 1,
+        implementationSpeed: 5,
+        evidenceStrength: 4,
+        equityImpact: 3,
+        themes: ['theme_heat', 'theme_populations'],
+        themeFit: { theme_heat: 4, theme_populations: 4 },
+        shortDesc: 'Issue heat alerts before dangerous weather so residents, services, and care networks can prepare in time.',
+        sections: [
+            { title: 'Elaborated description', body: 'Heat warning systems alert the public when forecasted conditions are hot enough to create health risks. They can use television, radio, websites, mobile apps, social media, text messages, and emergency notification systems. Alerts often include safety advice and directions to support such as nearby cooling centres.' },
+            { title: 'Price', body: 'Relatively inexpensive because forecasting and alert infrastructure already exists in the Netherlands. Costs mainly involve coordination, message design, translation, targeting, and maintenance.' },
+            { title: 'Pros', body: 'Reaches large populations quickly; gives people and services time to prepare; can be combined with outreach, welfare checks, and cooling-centre activation.' },
+            { title: 'Cons', body: 'Does not reduce temperature by itself; impact can be limited if people cannot act on the advice; warning fatigue may occur if alerts are too frequent or unclear.' },
+            { title: 'Where it fits best', body: 'Most effective as part of a wider heat adaptation strategy, especially when alerts trigger concrete local actions for vulnerable groups.' },
+        ],
+    },
+    {
+        id: 'air_conditioners',
+        name: 'Air conditioners',
+        type: 'Housing',
+        timing: 'structural',
+        cost: 4,
+        implementationSpeed: 3,
+        evidenceStrength: 5,
+        equityImpact: 3,
+        themes: ['theme_built_environment_access', 'theme_populations', 'theme_heat'],
+        themeFit: { theme_built_environment_access: 4, theme_populations: 4, theme_heat: 3 },
+        shortDesc: 'Use mechanical cooling to reduce indoor heat exposure in homes, care settings, hospitals, and cooling centres.',
+        sections: [
+            { title: 'Elaborated description', body: 'Air conditioning lowers indoor temperature by removing heat and humidity from indoor air and transferring heat outside. It is one of the most direct ways to reduce indoor heat exposure, especially in places where maintaining safe indoor temperatures is critical.' },
+            { title: 'Price', body: 'Portable units generally cost around EUR 250-700, while split-system air conditioners can cost around EUR 1,000-3,000 including installation. Running costs depend on electricity use.' },
+            { title: 'Pros', body: 'Highly effective at reducing indoor temperatures; provides immediate relief once available; some systems can also provide heating in winter.' },
+            { title: 'Cons', body: 'Can be unaffordable without financial support; increases electricity demand; can worsen emissions if energy is not clean; releases waste heat outdoors, which may add to local heat.' },
+            { title: 'Where it fits best', body: 'Most suitable where safe indoor temperatures are essential, such as nursing homes, hospitals, cooling centres, and homes of highly vulnerable residents.' },
         ],
     },
 ];
@@ -2061,7 +2221,7 @@ const INTERVENTION_DETAILS = {
             { label: "Built Env.", color: "#3a7baa", width: "100%" },
             { label: "Heat", color: "#c94a35", width: "100%" },
             { label: "Populations", color: "#7e5a9b", width: "75%" },
-            { label: "Socioeconomic", color: "#c27728", width: "75%" }
+            { label: "Socioeconomic", color: "#024f3b", width: "75%" }
         ]
     },
     "Surface reflectiveness": {
@@ -2086,7 +2246,7 @@ const INTERVENTION_DETAILS = {
             { label: "Built Env.", color: "#3a7baa", width: "100%" },
             { label: "Heat", color: "#c94a35", width: "100%" },
             { label: "Populations", color: "#7e5a9b", width: "75%" },
-            { label: "Socioeconomic", color: "#c27728", width: "75%" }
+            { label: "Socioeconomic", color: "#024f3b", width: "75%" }
         ]
     },
     "Water misting systems": {
@@ -2111,7 +2271,7 @@ const INTERVENTION_DETAILS = {
             { label: "Heat", color: "#c94a35", width: "100%" },
             { label: "Built Env.", color: "#3a7baa", width: "75%" },
             { label: "Populations", color: "#7e5a9b", width: "50%" },
-            { label: "Socioeconomic", color: "#c27728", width: "50%" }
+            { label: "Socioeconomic", color: "#024f3b", width: "50%" }
         ]
     },
     "Indoor solar shading": {
@@ -2134,7 +2294,7 @@ const INTERVENTION_DETAILS = {
             { label: "Built Env.", color: "#3a7baa", width: "100%" },
             { label: "Heat", color: "#c94a35", width: "75%" },
             { label: "Populations", color: "#7e5a9b", width: "50%" },
-            { label: "Socioeconomic", color: "#c27728", width: "50%" }
+            { label: "Socioeconomic", color: "#024f3b", width: "50%" }
         ]
     },
     "Heat subsidies": {
@@ -2156,10 +2316,106 @@ const INTERVENTION_DETAILS = {
             "May disproportionately reach higher income households if not designed carefully."
         ],
         rankings: [
-            { label: "Socioeconomic", color: "#c27728", width: "100%" },
+            { label: "Socioeconomic", color: "#024f3b", width: "100%" },
             { label: "Populations", color: "#7e5a9b", width: "75%" },
             { label: "Built Env.", color: "#3a7baa", width: "50%" },
             { label: "Heat", color: "#c94a35", width: "25%" }
+        ]
+    },
+    "Cool centers": {
+        theme: "Vulnerable Populations",
+        type: "Public service",
+        title: "Cool centers",
+        desc: "Cooling facilities are public spaces that provide a safe, temperature controlled environment during extreme heat. These centres are usually located in libraries, sport facilities, municipal buildings, or other public buildings equipped with cooling. They can also provide water, basic support, or medical assistance. Cool centers are particularly important for vulnerable individuals such as older adults, people with chronic health conditions, people without stable housing, and residents who cannot keep their homes cool.",
+        price: "Existing public buildings can often be used, so initial costs are relatively low. Main costs are staffing, electricity, communication, opening hours, and coordination with local services.",
+        pros: [
+            "Provides protection from heat during acute heatwave periods.",
+            "Can be implemented rapidly using existing public buildings.",
+            "Does not require major new infrastructure.",
+            "Can create opportunities for community support and outreach."
+        ],
+        cons: [
+            "Requires residents to know about and travel to the centers.",
+            "May be difficult to use if a center is not nearby or opening hours are limited.",
+            "Effectiveness depends on awareness, trust, accessibility, and actual use.",
+            "Does not directly reduce heat in homes or public outdoor spaces."
+        ],
+        rankings: [
+            { label: "Populations", color: "#7e5a9b", width: "100%" },
+            { label: "Built Env.", color: "#3a7baa", width: "75%" },
+            { label: "Socioeconomic", color: "#024f3b", width: "50%" },
+            { label: "Heat", color: "#c94a35", width: "25%" }
+        ]
+    },
+    "Educational programs": {
+        theme: "Vulnerable Populations",
+        type: "Communication",
+        title: "Educational programs",
+        desc: "Educational programs inform residents how to protect themselves and their families from heat and how to recognise early symptoms of heat-related illness. They can include school lessons, flyers, social media posts, posters, videos, newspaper information, face-to-face meetings, or tailored phone calls. They can also target specific groups such as elderly residents, outdoor workers, children, people with disabilities, and people without stable housing.",
+        price: "Relatively cost-effective because no new physical infrastructure is required, especially when digital communication and existing community channels are used.",
+        pros: [
+            "Can reach large numbers of people quickly.",
+            "Improves public awareness and may encourage preventative action.",
+            "Can be adapted to the needs of specific populations.",
+            "Can be implemented quickly and combined with warning systems or cooling-centre campaigns."
+        ],
+        cons: [
+            "Relies on people acting on the information provided.",
+            "May not reach socially isolated or digitally excluded residents.",
+            "Knowledge does not always translate into behaviour change.",
+            "Has limited impact if residents lack cooling, money, transport, or support."
+        ],
+        rankings: [
+            { label: "Populations", color: "#7e5a9b", width: "100%" },
+            { label: "Socioeconomic", color: "#024f3b", width: "75%" },
+            { label: "Heat", color: "#c94a35", width: "50%" },
+            { label: "Built Env.", color: "#3a7baa", width: "25%" }
+        ]
+    },
+    "Heat warning systems": {
+        theme: "Heat Exposure",
+        type: "Warning system",
+        title: "Heat warning systems",
+        desc: "Heat warning systems alert the public when weather conditions are forecasted to become hot enough to pose significant health risks. Alerts can be issued through television, radio, websites, mobile apps, social media, text messages, and emergency notification systems. They often include advice on staying safe and can point residents toward support such as nearby cooling centres.",
+        price: "Relatively inexpensive because the Netherlands already has forecasting and alert infrastructure. Costs mainly involve coordination, message design, translation, targeting, and maintenance.",
+        pros: [
+            "Reaches large populations quickly.",
+            "Allows residents, services, and care networks to prepare in advance.",
+            "Can be linked to concrete local actions such as welfare checks or cooling-centre activation."
+        ],
+        cons: [
+            "Does not reduce temperature by itself.",
+            "Impact is limited if people cannot act on the advice.",
+            "Warning fatigue may occur if alerts are too frequent or unclear."
+        ],
+        rankings: [
+            { label: "Heat", color: "#c94a35", width: "100%" },
+            { label: "Populations", color: "#7e5a9b", width: "75%" },
+            { label: "Socioeconomic", color: "#024f3b", width: "50%" },
+            { label: "Built Env.", color: "#3a7baa", width: "25%" }
+        ]
+    },
+    "Air conditioners": {
+        theme: "Built Environment & Access",
+        type: "Housing",
+        title: "Air conditioners",
+        desc: "Air conditioning is a cooling technology that reduces indoor temperatures by removing heat and humidity from the air. It is one of the most effective direct interventions for reducing indoor heat exposure, especially in settings where maintaining a safe indoor temperature is critical.",
+        price: "Portable air conditioning units generally cost around EUR 250-700, while split-system air conditioners typically cost around EUR 1,000-3,000 including installation. Electricity is also needed to run air conditioning.",
+        pros: [
+            "Highly effective at reducing indoor temperature.",
+            "Provides immediate relief once available.",
+            "Many air conditioners can also provide heat in winter."
+        ],
+        cons: [
+            "Can be unaffordable for low-income residents without financial support.",
+            "Increases electricity consumption and can worsen climate impacts if energy is not clean.",
+            "Expels heat outdoors, which can add to local heat."
+        ],
+        rankings: [
+            { label: "Built Env.", color: "#3a7baa", width: "100%" },
+            { label: "Populations", color: "#7e5a9b", width: "75%" },
+            { label: "Heat", color: "#c94a35", width: "50%" },
+            { label: "Socioeconomic", color: "#024f3b", width: "50%" }
         ]
     }
 };
@@ -2294,7 +2550,16 @@ function buildThemeTabs() {
         const b = document.createElement('button');
         b.className = 'theme-tab' + (i===0?' on':'');
         b.dataset.key = t.key;
-        b.innerHTML = `<span class="t-dot" style="background:${t.color}"></span>${t.short}`;
+        b.title = t.help || t.label;
+        b.innerHTML = `
+            <span class="t-dot" style="background:${t.color}"></span>
+            <span class="theme-label-row">
+                <span>${escapeHtml(t.short)}</span>
+                <span class="theme-help" aria-hidden="true">?
+                    <span class="theme-help-text">${escapeHtml(t.help || t.label)}</span>
+                </span>
+            </span>
+        `;
         b.addEventListener('click', () => {
             activeTheme = t;
             document.querySelectorAll('.theme-tab').forEach(x => x.classList.toggle('on', x.dataset.key===t.key));
