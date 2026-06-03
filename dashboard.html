@@ -30,7 +30,7 @@
 
             --c-heat: #c94a35;
             --c-pop: #7e5a9b;
-            --c-socio: #024f3b;
+            --c-socio: #0f8f68;
             --c-built: #3a7baa;
         }
 
@@ -602,7 +602,7 @@ const THEME_DEFS = {
     composite:                { label: 'Composite Risk',              color: '#3a2e39' },
     heat:                     { label: 'Heat Exposure',                color: '#c94a35' },
     populations:              { label: 'Vulnerable Populations',       color: '#7e5a9b' },
-    socioeconomic:            { label: 'Socioeconomic Deprivation',    color: '#024f3b' },
+    socioeconomic:            { label: 'Socioeconomic Deprivation',    color: '#0f8f68' },
     built_environment_access: { label: 'Built Environment & Access',   color: '#3a7baa' },
 };
 
@@ -613,7 +613,7 @@ const MODEL_EXPLANATIONS = {
             Composite Risk ≈ f(<br>
             &nbsp;&nbsp;<span style="color:#c94a35">Heat exposure</span>,<br>
             &nbsp;&nbsp;<span style="color:#7e5a9b">Vulnerable populations</span>,<br>
-            &nbsp;&nbsp;<span style="color:#024f3b">Socioeconomic deprivation</span>,<br>
+            &nbsp;&nbsp;<span style="color:#0f8f68">Socioeconomic deprivation</span>,<br>
             &nbsp;&nbsp;<span style="color:#3a7baa">Built environment &amp; access</span><br>
             )
         `,
@@ -676,12 +676,12 @@ const MODEL_EXPLANATIONS = {
         title: 'Socioeconomic deprivation',
         formula: `
             Socioeconomic Deprivation ≈ f(<br>
-            &nbsp;&nbsp;<span style="color:#024f3b">Population density</span>,<br>
-            &nbsp;&nbsp;<span style="color:#024f3b">Homes built more than 10 years ago</span>,<br>
-            &nbsp;&nbsp;<span style="color:#024f3b">Low-income households</span>,<br>
-            &nbsp;&nbsp;<span style="color:#024f3b">Employment rate</span>,<br>
-            &nbsp;&nbsp;<span style="color:#024f3b">People living in povert</span><br>
-            &nbsp;&nbsp;<span style="color:#024f3b">Low education level</span><br>
+            &nbsp;&nbsp;<span style="color:#0f8f68">Population density</span>,<br>
+            &nbsp;&nbsp;<span style="color:#0f8f68">Homes built more than 10 years ago</span>,<br>
+            &nbsp;&nbsp;<span style="color:#0f8f68">Low-income households</span>,<br>
+            &nbsp;&nbsp;<span style="color:#0f8f68">Employment rate</span>,<br>
+            &nbsp;&nbsp;<span style="color:#0f8f68">People living in povert</span><br>
+            &nbsp;&nbsp;<span style="color:#0f8f68">Low education level</span><br>
             )
         `,
         explain: `
@@ -732,7 +732,7 @@ const RAMPS = {
     composite:    ['#fefefa','#FF7700','#A30000','#0a0a0a'],
     heat:         ['#fdfff7','#fbd9cc','#e58060','#c94a35','#3a2e39'],
     populations:  ['#fdfff7','#e2c6f2','#b271d6','#76319b','#3a2e39'],
-    socioeconomic:['#fefefa','#024f3b','#0a0a0a'],
+    socioeconomic:['#fefefa','#0f8f68','#0a0a0a'],
     built_environment_access:['#fdfff7','#cce3f0','#68b0d8','#3a7baa','#3a2e39'],
 };
 
