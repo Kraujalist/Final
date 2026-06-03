@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interventions | Heat &amp; Health NL</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="global.css">
+    <style>
+        body { background: var(--paper); color: var(--ink); }
+        .container { max-width: 1180px; margin: 0 auto; padding: 70px 32px; }
+        .section { margin-bottom: 72px; }
+        .section-head { max-width: 780px; margin-bottom: 28px; }
+        .section h2 { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.6rem); line-height: .95; margin-bottom: 16px; }
+        .section p.lead { color: var(--muted); font-size: 1.02rem; line-height: 1.7; }
+        .intervention-grid { display: grid; gap: 26px; }
+        .intervention-card {
+            background: rgba(253,255,247,.86);
+            border: 1px solid rgba(58,46,57,.16);
+            border-top: 5px solid var(--accent);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 16px 34px rgba(58,46,57,.08);
+            transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+        }
+        .intervention-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 44px rgba(58,46,57,.13);
+            border-color: rgba(37,147,143,.42);
+        }
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: flex-start;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(58,46,57,.12);
+            margin-bottom: 22px;
+        }
+        .intervention-meta {
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--accent-strong);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .intervention-card h3 {
+            font-family: var(--serif);
+            font-size: clamp(1.6rem, 2.5vw, 2.35rem);
+            line-height: 1;
+            margin: 0;
+        }
+        .type-pill {
+            flex: 0 0 auto;
+            font-family: var(--mono);
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--ink);
+            background: rgba(37,147,143,.12);
+            border: 1px solid rgba(37,147,143,.3);
+            border-radius: 999px;
+            padding: 9px 12px;
+        }
+        .desc {
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.72;
+            max-width: 980px;
+            margin-bottom: 24px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+        .detail-box {
+            background: rgba(255,255,255,.34);
+            border: 1px solid rgba(58,46,57,.13);
+            border-radius: 8px;
+            padding: 18px;
+        }
+        .detail-box h4, .ranking-box h4 {
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--light);
+            margin: 0 0 12px;
+        }
+        .detail-box ul {
+            margin: 0;
+            padding-left: 18px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+        .detail-box li + li { margin-top: 8px; }
+        .cost-box {
+            border-left: 4px solid var(--accent);
+            background: rgba(37,147,143,.09);
+            padding: 18px 20px;
+            border-radius: 0 8px 8px 0;
+            color: var(--muted);
+            line-height: 1.62;
+            margin-bottom: 20px;
+        }
+        .ranking-box {
+            background: var(--ink);
+            color: var(--paper);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .ranking-box h4 { color: rgba(253,255,247,.62); }
+        .fit-row {
+            display: grid;
+            grid-template-columns: 130px 1fr 26px;
+            gap: 12px;
+            align-items: center;
+            margin-top: 12px;
+            font-family: var(--mono);
+            font-size: .66rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+        .fit-track {
+            height: 8px;
+            background: rgba(253,255,247,.14);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .fit-fill { height: 100%; border-radius: inherit; }
+        .fit-rank { text-align: right; color: rgba(253,255,247,.72); }
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 26px;
+        }
+        .quick-nav a {
+            font-family: var(--mono);
+            font-size: .64rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--ink);
+            border: 1px solid rgba(58,46,57,.16);
+            border-radius: 999px;
+            padding: 10px 13px;
+            background: rgba(253,255,247,.72);
+        }
+        .quick-nav a:hover { color: var(--paper); background: var(--accent-strong); border-color: var(--accent-strong); }
+        @media (max-width: 760px) {
+            .container { padding: 48px 22px; }
+            .card-top, .detail-grid { display: block; }
+            .type-pill { display: inline-block; margin-top: 16px; }
+            .detail-box + .detail-box { margin-top: 16px; }
+            .fit-row { grid-template-columns: 100px 1fr 24px; }
+            .intervention-card { padding: 24px; }
+        }
+    </style>
+</head>
+<body data-page="interventions">
+<div data-nav-mount></div>
+
+<header class="page-hero">
+    <div class="page-hero-inner">
+        <p class="page-eyebrow">Intervention Library</p>
+        <h1>Heat-health interventions</h1>
+        <p>All intervention options used by the neighbourhood recommender, with their full explanations, implementation notes, strengths, limits, and theme fit.</p>
+    </div>
+</header>
+
+<main class="container">
+    <section class="section">
+        <div class="section-head">
+            <h2>Intervention overview</h2>
+            <p class="lead">The recommender prioritises interventions based on the highest-scoring vulnerability themes in each neighbourhood. These entries explain what each action does and where it is most relevant.</p>
+            <nav class="quick-nav" aria-label="Jump to intervention">
+                <a href="#green-based-solutions">Green-Based Solutions</a>
+                <a href="#surface-reflectiveness">Surface reflectiveness</a>
+                <a href="#water-misting-systems">Water misting systems</a>
+                <a href="#indoor-solar-shading">Indoor solar shading</a>
+                <a href="#heat-subsidies">Heat subsidies</a>
+                <a href="#cool-centers">Cool centers</a>
+                <a href="#educational-programs">Educational programs</a>
+                <a href="#heat-warning-systems">Heat warning systems</a>
+                <a href="#air-conditioners">Air conditioners</a>
+            </nav>
+        </div>
+
+        <div class="intervention-grid">
+            <article class="intervention-card" id="green-based-solutions" style="border-top-color: var(--c-heat);">
+                <div class="card-top">
+                    <div>
+                        <div class="intervention-meta">Heat Exposure - Infrastructure</div>
+                        <h3>Green-Based Solutions (GBS)</h3>
+                    </div>
+                    <span class="type-pill">Structural adaptation</span>
+                </div>
+                <p class="desc">Green infrastructure can take various forms, including street trees, parks, community gardens, green roofs, and green walls, and can reduce heat exposure in several ways. Trees provide shade, which has been shown to reduce the surface temperature of sidewalks by more than 30 degrees C in a recent Dutch study. Vegetation also cools the surrounding environment through evapotranspiration, a process in which plants release water vapor through their leaves. As water evaporates, heat is absorbed from the surrounding air. Planting additional greenery is also effective in addressing the urban heat island effect. An Australian study estimated that widespread implementation of GBS could reduce heat-related mortality by 37-99%.</p>
+                <div class="cost-box"><strong>Cost and implementation:</strong> Grass and bushes are generally inexpensive, but usually have limited cooling capacity. Trees have high cooling capacity, especially with large canopies, but tend to be more expensive. Green roofs and green walls vary by structure.</div>
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <h4>Strengths</h4>
+                        <ul>
+                            <li>Effective in reducing heat exposure and the urban heat island effect.</li>
+                            <li>Green roofs and walls need little additional space, which helps in dense areas.</li>
+                            <li>Can improve biodiversity, air quality, stormwater management, carbon sequestration, and local aesthetics.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Limits</h4>
+                        <ul>
+                            <li>Trees need sufficient space; urban streets may need at least 1.5-2.5 metres between buildings.</li>
+                            <li>Vegetation may require ongoing maintenance and water, which can be difficult during droughts.</li>
+                            <li>Large trees in narrow streets can block airflow during hot periods.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ranking-box">
+                    <h4>Best theme fit</h4>
+                    <div class="fit-row"><span>Built Env.</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#3a7baa;"></div></div><span class="fit-rank">1</span></div>
+                    <div class="fit-row"><span>Heat</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#c94a35;"></div></div><span class="fit-rank">2</span></div>
+                    <div class="fit-row"><span>Populations</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#7e5a9b;"></div></div><span class="fit-rank">3</span></div>
+                    <div class="fit-row"><span>Socioeconomic</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#024f3b;"></div></div><span class="fit-rank">4</span></div>
+                </div>
+            </article>
+
+            <article class="intervention-card" id="surface-reflectiveness" style="border-top-color: var(--c-heat);">
+                <div class="card-top">
+                    <div>
+                        <div class="intervention-meta">Heat Exposure - Infrastructure</div>
+                        <h3>Surface reflectiveness</h3>
+                    </div>
+                    <span class="type-pill">Structural adaptation</span>
+                </div>
+                <p class="desc">Many urban surfaces, such as dark asphalt roads, concrete pavements, and traditional roofing materials, absorb large amounts of solar radiation during the day and release this stored heat over time. This contributes significantly to the urban heat island effect. Increasing the reflectiveness, or albedo, of urban surfaces can reduce this heat accumulation. Reflective roofs and pavements are designed to reflect a greater proportion of sunlight and absorb less heat. An Italian study suggested that if the albedo of all surfaces was increased, temperature could be reduced by up to 2.5 degrees C.</p>
+                <div class="cost-box"><strong>Cost and implementation:</strong> Costs vary by material and retrofit scale. Cool roofs and pavements are often easiest to integrate during renovation or scheduled infrastructure work.</div>
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <h4>Strengths</h4>
+                        <ul>
+                            <li>Reduces surface temperatures and heat absorption.</li>
+                            <li>Works well in dense built areas with limited space.</li>
+                            <li>Does not require energy or water use and needs little maintenance.</li>
+                            <li>Can reduce peak cooling demand in air-conditioned residential buildings.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Limits</h4>
+                        <ul>
+                            <li>Reflective surfaces can cause glare for pedestrians, drivers, or nearby buildings.</li>
+                            <li>Cooling benefits may decrease if surfaces are not cleaned.</li>
+                            <li>Private property upgrades may be unaffordable without support.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ranking-box">
+                    <h4>Best theme fit</h4>
+                    <div class="fit-row"><span>Built Env.</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#3a7baa;"></div></div><span class="fit-rank">1</span></div>
+                    <div class="fit-row"><span>Heat</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#c94a35;"></div></div><span class="fit-rank">2</span></div>
+                    <div class="fit-row"><span>Populations</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#7e5a9b;"></div></div><span class="fit-rank">3</span></div>
+                    <div class="fit-row"><span>Socioeconomic</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#024f3b;"></div></div><span class="fit-rank">4</span></div>
+                </div>
+            </article>
+
+            <article class="intervention-card" id="water-misting-systems" style="border-top-color: var(--c-heat);">
+                <div class="card-top">
+                    <div>
+                        <div class="intervention-meta">Heat Exposure - Infrastructure</div>
+                        <h3>Water misting systems</h3>
+                    </div>
+                    <span class="type-pill">Immediate response</span>
+                </div>
+                <p class="desc">Water misting systems use nozzles that release very small water droplets into the air. These droplets quickly evaporate, absorbing heat energy from the surrounding environment and lowering air temperature. They can be installed in parks, bus stops, playgrounds, or other outdoor communal areas. They are especially effective in dry environments and have been found to reduce perceived outdoor temperature by up to 6.5 degrees C in a US study.</p>
+                <div class="cost-box"><strong>Cost and implementation:</strong> Portable misting systems are generally relatively inexpensive and can be installed quickly. Operating costs depend on water consumption and energy requirements for pumping.</div>
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <h4>Strengths</h4>
+                        <ul>
+                            <li>Provides immediate cooling and heat relief.</li>
+                            <li>Can be deployed rapidly during heatwaves.</li>
+                            <li>Works in public gathering spaces and high-traffic pedestrian areas.</li>
+                            <li>Requires relatively little physical space.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Limits</h4>
+                        <ul>
+                            <li>Needs a reliable water supply and increases water consumption.</li>
+                            <li>Is less effective in humid conditions.</li>
+                            <li>Cooling effects are localised and temporary.</li>
+                            <li>May create slippery surfaces if not designed well.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ranking-box">
+                    <h4>Best theme fit</h4>
+                    <div class="fit-row"><span>Heat</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#c94a35;"></div></div><span class="fit-rank">1</span></div>
+                    <div class="fit-row"><span>Built Env.</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#3a7baa;"></div></div><span class="fit-rank">2</span></div>
+                    <div class="fit-row"><span>Populations</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#7e5a9b;"></div></div><span class="fit-rank">3</span></div>
+                    <div class="fit-row"><span>Socioeconomic</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#024f3b;"></div></div><span class="fit-rank">4</span></div>
+                </div>
+            </article>
+
+            <article class="intervention-card" id="indoor-solar-shading" style="border-top-color: var(--c-built);">
+                <div class="card-top">
+                    <div>
+                        <div class="intervention-meta">Built Environment &amp; Access - Housing</div>
+                        <h3>Indoor solar shading</h3>
+                    </div>
+                    <span class="type-pill">Structural adaptation</span>
+                </div>
+                <p class="desc">Solar shading uses architectural elements that prevent sunlight from directly striking windows, walls, and other building surfaces. Common examples include window shutters, external blinds, overhangs, balconies, and recessed windows. These features act as barriers between the sun and the building, reducing solar heat gain before it enters the indoor environment. Research suggests that external shading devices are generally more effective than internal blinds because they block solar radiation before it passes through the window.</p>
+                <div class="cost-box"><strong>Cost and implementation:</strong> Window shutters and external blinds generally involve moderate installation costs. Balconies and overhangs can be incorporated into new buildings but may increase construction costs. Maintenance costs are usually low.</div>
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <h4>Strengths</h4>
+                        <ul>
+                            <li>Reduces indoor temperatures and indoor heat exposure.</li>
+                            <li>Does not require energy or water use.</li>
+                            <li>Provides immediate cooling benefits once installed.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Limits</h4>
+                        <ul>
+                            <li>May be unaffordable for low-income residents or increase housing costs.</li>
+                            <li>Effectiveness depends on housing type and window exposure.</li>
+                            <li>Only affects indoor temperature.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ranking-box">
+                    <h4>Best theme fit</h4>
+                    <div class="fit-row"><span>Built Env.</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#3a7baa;"></div></div><span class="fit-rank">1</span></div>
+                    <div class="fit-row"><span>Heat</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#c94a35;"></div></div><span class="fit-rank">2</span></div>
+                    <div class="fit-row"><span>Populations</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#7e5a9b;"></div></div><span class="fit-rank">3</span></div>
+                    <div class="fit-row"><span>Socioeconomic</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#024f3b;"></div></div><span class="fit-rank">4</span></div>
+                </div>
+            </article>
+
+            <article class="intervention-card" id="heat-subsidies" style="border-top-color: #024f3b;">
+                <div class="card-top">
+                    <div>
+                        <div class="intervention-meta">Socioeconomic - Financial</div>
+                        <h3>Heat subsidies</h3>
+                    </div>
+                    <span class="type-pill">Structural adaptation</span>
+                </div>
+                <p class="desc">One of the main barriers to implementing heat adaptation measures is upfront cost. Heat subsidies address this by providing financial support to property owners or households through grants, tax reductions, or low-interest loans. By lowering the financial burden associated with solar shading, green roofs, reflective roofing, or other measures, governments can accelerate adoption and increase resilience to heatwaves. Subsidies may be particularly important for low-income households, who are often more vulnerable to extreme heat but may lack the resources to invest in adaptation.</p>
+                <div class="cost-box"><strong>Cost and implementation:</strong> Subsidies can be expensive for governments, but they may reduce long-term public health and energy costs associated with extreme heat.</div>
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <h4>Strengths</h4>
+                        <ul>
+                            <li>Reduces financial barriers to heat adaptation.</li>
+                            <li>Encourages adoption of cooling interventions and supports vulnerable households.</li>
+                            <li>Can apply to many intervention types.</li>
+                            <li>May reduce energy consumption when aimed at passive cooling.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Limits</h4>
+                        <ul>
+                            <li>Requires substantial public funding.</li>
+                            <li>Depends on awareness, application processes, and participation.</li>
+                            <li>May reach higher-income households first if not designed carefully.</li>
+                            <li>Some groups may be less interested in adaptation measures despite vulnerability.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ranking-box">
+                    <h4>Best theme fit</h4>
+                    <div class="fit-row"><span>Socioeconomic</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#024f3b;"></div></div><span class="fit-rank">1</span></div>
+                    <div class="fit-row"><span>Populations</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#7e5a9b;"></div></div><span class="fit-rank">2</span></div>
+                    <div class="fit-row"><span>Built Env.</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#3a7baa;"></div></div><span class="fit-rank">3</span></div>
+                    <div class="fit-row"><span>Heat</span><div class="fit-track"><div class="fit-fill" style="width:25%;background:#c94a35;"></div></div><span class="fit-rank">4</span></div>
+                </div>
+            </article>
+
+            <article class="intervention-card" id="cool-centers" style="border-top-color: var(--c-pop);">
+                <div class="card-top">
+                    <div>
+                        <div class="intervention-meta">Vulnerable Populations - Public service</div>
+                        <h3>Cool centers</h3>
+                    </div>
+                    <span class="type-pill">Immediate response</span>
+                </div>
+                <p class="desc">Cooling facilities are public spaces that provide a safe, temperature-controlled environment during extreme heat. These centres are usually located in libraries, sport facilities, municipal buildings, or other public buildings equipped with cooling. They can also provide water, basic support, or medical assistance. Cool centers are particularly important for older adults, people with chronic health conditions, people without stable housing, and residents who cannot keep their homes cool.</p>
+                <div class="cost-box"><strong>Cost and implementation:</strong> Existing public buildings can often be used, so initial costs are relatively low. Main costs are staffing, electricity, communication, opening hours, and coordination with local services.</div>
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <h4>Strengths</h4>
+                        <ul>
+                            <li>Protects residents during acute heatwave periods.</li>
+                            <li>Can be implemented rapidly using existing public buildings.</li>
+                            <li>Does not require major new infrastructure.</li>
+                            <li>Can support community outreach and welfare checks.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Limits</h4>
+                        <ul>
+                            <li>Requires residents to know about and travel to the centers.</li>
+                            <li>May be difficult if a center is not nearby or has limited hours.</li>
+                            <li>Effectiveness depends on awareness, trust, accessibility, and actual use.</li>
+                            <li>Does not directly reduce heat in homes or outdoor spaces.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ranking-box">
+                    <h4>Best theme fit</h4>
+                    <div class="fit-row"><span>Populations</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#7e5a9b;"></div></div><span class="fit-rank">1</span></div>
+                    <div class="fit-row"><span>Built Env.</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#3a7baa;"></div></div><span class="fit-rank">2</span></div>
+                    <div class="fit-row"><span>Socioeconomic</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#024f3b;"></div></div><span class="fit-rank">3</span></div>
+                    <div class="fit-row"><span>Heat</span><div class="fit-track"><div class="fit-fill" style="width:25%;background:#c94a35;"></div></div><span class="fit-rank">4</span></div>
+                </div>
+            </article>
+
+            <article class="intervention-card" id="educational-programs" style="border-top-color: var(--c-pop);">
+                <div class="card-top">
+                    <div>
+                        <div class="intervention-meta">Vulnerable Populations - Communication</div>
+                        <h3>Educational programs</h3>
+                    </div>
+                    <span class="type-pill">Immediate response</span>
+                </div>
+                <p class="desc">Educational programs inform residents how to protect themselves and their families from heat and how to recognise early symptoms of heat-related illness. They can include school lessons, flyers, social media posts, posters, videos, newspaper information, face-to-face meetings, or tailored phone calls. They can also target specific groups such as elderly residents, outdoor workers, children, people with disabilities, and people without stable housing.</p>
+                <div class="cost-box"><strong>Cost and implementation:</strong> Educational programs are relatively cost-effective because no new physical infrastructure is required, especially when digital communication and existing community channels are used.</div>
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <h4>Strengths</h4>
+                        <ul>
+                            <li>Can reach large numbers of people quickly.</li>
+                            <li>Improves public awareness and may encourage preventative action.</li>
+                            <li>Can be adapted to specific population groups.</li>
+                            <li>Works well with warning systems or cooling-centre campaigns.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Limits</h4>
+                        <ul>
+                            <li>Relies on people acting on the information provided.</li>
+                            <li>May not reach socially isolated or digitally excluded residents.</li>
+                            <li>Knowledge does not always translate into behaviour change.</li>
+                            <li>Has limited effect if residents lack cooling, money, transport, or support.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ranking-box">
+                    <h4>Best theme fit</h4>
+                    <div class="fit-row"><span>Populations</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#7e5a9b;"></div></div><span class="fit-rank">1</span></div>
+                    <div class="fit-row"><span>Socioeconomic</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#024f3b;"></div></div><span class="fit-rank">2</span></div>
+                    <div class="fit-row"><span>Heat</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#c94a35;"></div></div><span class="fit-rank">3</span></div>
+                    <div class="fit-row"><span>Built Env.</span><div class="fit-track"><div class="fit-fill" style="width:25%;background:#3a7baa;"></div></div><span class="fit-rank">4</span></div>
+                </div>
+            </article>
+
+            <article class="intervention-card" id="heat-warning-systems" style="border-top-color: var(--c-heat);">
+                <div class="card-top">
+                    <div>
+                        <div class="intervention-meta">Heat Exposure - Warning system</div>
+                        <h3>Heat warning systems</h3>
+                    </div>
+                    <span class="type-pill">Immediate response</span>
+                </div>
+                <p class="desc">Heat warning systems alert the public when weather conditions are forecasted to become hot enough to pose significant health risks. Alerts can be issued through television, radio, websites, mobile apps, social media, text messages, and emergency notification systems. They often include advice on staying safe and can point residents toward support such as nearby cooling centres.</p>
+                <div class="cost-box"><strong>Cost and implementation:</strong> These systems are relatively inexpensive because the Netherlands already has forecasting and alert infrastructure. Costs mainly involve coordination, message design, translation, targeting, and maintenance.</div>
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <h4>Strengths</h4>
+                        <ul>
+                            <li>Reaches large populations quickly.</li>
+                            <li>Allows residents, services, and care networks to prepare in advance.</li>
+                            <li>Can be linked to local actions such as welfare checks or cooling-centre activation.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Limits</h4>
+                        <ul>
+                            <li>Does not reduce temperature by itself.</li>
+                            <li>Impact is limited if people cannot act on the advice.</li>
+                            <li>Warning fatigue may occur if alerts are too frequent or unclear.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ranking-box">
+                    <h4>Best theme fit</h4>
+                    <div class="fit-row"><span>Heat</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#c94a35;"></div></div><span class="fit-rank">1</span></div>
+                    <div class="fit-row"><span>Populations</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#7e5a9b;"></div></div><span class="fit-rank">2</span></div>
+                    <div class="fit-row"><span>Socioeconomic</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#024f3b;"></div></div><span class="fit-rank">3</span></div>
+                    <div class="fit-row"><span>Built Env.</span><div class="fit-track"><div class="fit-fill" style="width:25%;background:#3a7baa;"></div></div><span class="fit-rank">4</span></div>
+                </div>
+            </article>
+
+            <article class="intervention-card" id="air-conditioners" style="border-top-color: var(--c-built);">
+                <div class="card-top">
+                    <div>
+                        <div class="intervention-meta">Built Environment &amp; Access - Housing</div>
+                        <h3>Air conditioners</h3>
+                    </div>
+                    <span class="type-pill">Immediate response</span>
+                </div>
+                <p class="desc">Air conditioning is a cooling technology that reduces indoor temperatures by removing heat and humidity from the air. It is one of the most effective direct interventions for reducing indoor heat exposure, especially in settings where maintaining a safe indoor temperature is critical.</p>
+                <div class="cost-box"><strong>Cost and implementation:</strong> Portable air conditioning units generally cost around EUR 250-700, while split-system air conditioners typically cost around EUR 1,000-3,000 including installation. Electricity is also needed to run air conditioning.</div>
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <h4>Strengths</h4>
+                        <ul>
+                            <li>Highly effective at reducing indoor temperature.</li>
+                            <li>Provides immediate relief once available.</li>
+                            <li>Many air conditioners can also provide heat in winter.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Limits</h4>
+                        <ul>
+                            <li>Can be unaffordable for low-income residents without financial support.</li>
+                            <li>Increases electricity consumption and can worsen climate impacts if energy is not clean.</li>
+                            <li>Expels heat outdoors, which can add to local heat.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ranking-box">
+                    <h4>Best theme fit</h4>
+                    <div class="fit-row"><span>Built Env.</span><div class="fit-track"><div class="fit-fill" style="width:100%;background:#3a7baa;"></div></div><span class="fit-rank">1</span></div>
+                    <div class="fit-row"><span>Populations</span><div class="fit-track"><div class="fit-fill" style="width:75%;background:#7e5a9b;"></div></div><span class="fit-rank">2</span></div>
+                    <div class="fit-row"><span>Heat</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#c94a35;"></div></div><span class="fit-rank">3</span></div>
+                    <div class="fit-row"><span>Socioeconomic</span><div class="fit-track"><div class="fit-fill" style="width:50%;background:#024f3b;"></div></div><span class="fit-rank">4</span></div>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Heat Vulnerability Tool &middot; Developed by Computational Social Science students</p>
+</footer>
+
+<script src="nav.js?v=nav-uniform-2" defer></script>
+</body>
+</html>
