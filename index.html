@@ -50,7 +50,7 @@
     .hero-cta{
         display:inline-block;font-family:var(--mono);font-size:0.68rem;
         letter-spacing:0.11em;text-transform:uppercase;
-        background:li-gradient(135deg,var(--accent) 0%,var(--accent-strong) 100%);color:var(--paper);
+        background:linear-gradient(135deg,var(--accent) 0%,var(--accent-strong) 100%);color:var(--paper);
         text-decoration:none;padding:14px 32px;border-radius:999px;transition:.2s;
         box-shadow:0 8px 28px rgba(37,147,143,.28);
     }
@@ -64,7 +64,7 @@
 
     /* ── PROBLEM ── */
     #problem{
-        background:li-gradient(165deg,#3a2e39 0%,#2f2630 55%,#211a20 100%);
+        background:linear-gradient(165deg,#3a2e39 0%,#2f2630 55%,#211a20 100%);
         color:#fdfff7;padding:96px 32px;
         position:relative;overflow:hidden;
     }
@@ -493,6 +493,7 @@
     }
     .back-btn:hover{border-color:var(--ink);color:var(--ink);transform:translateX(-2px)}
     .results-layout{display:grid;grid-template-columns:1fr 370px;gap:24px;align-items:start}
+    .results-layout>div{min-width:0}
     .result-mobile-tabs{display:none}
     .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
     .summary-card{
@@ -577,7 +578,7 @@
     }
 
     /* Neighborhood ranking — full list, scrollable */
-    .rank-scroll{max-height:min(50vh,420px);overflow-y:auto;padding-right:6px;margin-top:4px}
+    .rank-scroll{height:min(50vh,420px);overflow-y:auto;padding-right:6px;margin-top:4px}
     .rank-scroll::-webkit-scrollbar{width:8px}
     .rank-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
     .rank-list{display:flex;flex-direction:column;gap:4px}
@@ -910,6 +911,7 @@
         .hero-right{flex:none;width:100%}
         .pillars,.prov-grid{grid-template-columns:repeat(2,1fr)}
         .results-layout{grid-template-columns:1fr}
+        .rank-scroll{height:min(60vh,560px)}
         .muni-list{grid-template-columns:1fr}
     }
     @media(max-width:600px){
@@ -1738,7 +1740,10 @@ const muniSearchEl = document.getElementById('muniSearch');
 if (muniSearchEl) muniSearchEl.addEventListener('input', () => { if (activeProv) renderMuniList(); });
 const rankSearchEl = document.getElementById('rankSearch');
 if (rankSearchEl) rankSearchEl.addEventListener('input', () => {
-    if (activeMuniFeats && activeTheme) buildRankings(activeMuniFeats, activeTheme);
+    if (activeMuniFeats && activeTheme) {
+        buildRankings(activeMuniFeats, activeTheme);
+        syncNeighborhoodScroller();
+    }
 });
 
 const globalMuniSearchEl = document.getElementById('globalMuniSearch');
@@ -1787,6 +1792,7 @@ function refreshScenarioViews() {
     buildOverview(activeMuniFeats, activeMuni);
     buildResultSummary(activeMuniFeats, activeMuni);
     updateMapLegend();
+    syncNeighborhoodScroller();
     const meta = document.getElementById('rMuniMeta');
     if (meta) {
         meta.textContent = `${activeMuniFeats.length} neighborhoods · ${activeProv?.name || 'Netherlands'} · ${activeScenarioYear} projection`;
@@ -2020,6 +2026,7 @@ function selectMuni(name) {
         buildOverview(feats, name);
         buildRankings(feats, activeTheme);
         buildInterventions(feats);
+        syncNeighborhoodScroller();
     }, 50);
 }
 
@@ -2569,6 +2576,7 @@ function buildThemeTabs() {
                 buildRankings(activeMuniFeats, t);
                 buildOverview(activeMuniFeats, activeMuni);
                 buildResultSummary(activeMuniFeats, activeMuni);
+                syncNeighborhoodScroller();
             }
         });
         tabs.appendChild(b);
@@ -2780,6 +2788,27 @@ function buildInterventions(feats) {
     `;
 
     setupInterventionPager();
+    syncNeighborhoodScroller();
+}
+
+function syncNeighborhoodScroller() {
+    window.requestAnimationFrame(() => {
+        const layout = document.querySelector('.results-layout');
+        const leftCol = layout?.querySelector(':scope > div:first-child');
+        const rightCol = layout?.querySelector(':scope > div:last-child');
+        const scroller = document.querySelector('.rank-scroll');
+        if (!layout || !leftCol || !rightCol || !scroller) return;
+
+        if (window.matchMedia('(max-width: 960px)').matches) {
+            scroller.style.height = '';
+            return;
+        }
+
+        const rightBottom = rightCol.getBoundingClientRect().bottom;
+        const scrollerTop = scroller.getBoundingClientRect().top;
+        const target = Math.max(300, Math.round(rightBottom - scrollerTop));
+        scroller.style.height = `${target}px`;
+    });
 }
 
 function interventionFitForTheme(item, themeKey) {
@@ -2896,9 +2925,13 @@ function setupInterventionPager() {
             panels.forEach(panel => {
                 panel.classList.toggle('active', panel.dataset.intPanel === target);
             });
+
+            syncNeighborhoodScroller();
         });
     });
 }
+
+window.addEventListener('resize', syncNeighborhoodScroller);
 
 // ═══════════════════════════════════════════════════════════
 // UI HELPERS
