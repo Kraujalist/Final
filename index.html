@@ -1662,6 +1662,29 @@ function themeMetaForKey(themeKey) {
     return DRIVER_THEMES.find(t => t.key === themeKey) || { label: 'Vulnerability', color: '#3a2e39', short: 'Theme' };
 }
 
+function primaryThemeForIntervention(item) {
+    const orderedKeys = [...(item.themes || [])];
+    Object.keys(item.themeFit || {}).forEach(key => {
+        if (!orderedKeys.includes(key)) orderedKeys.push(key);
+    });
+
+    let primaryKey = orderedKeys[0];
+    let bestFit = -Infinity;
+    orderedKeys.forEach(key => {
+        const fit = item.themeFit?.[key] ?? 0;
+        if (fit > bestFit) {
+            primaryKey = key;
+            bestFit = fit;
+        }
+    });
+
+    return {
+        key: primaryKey,
+        fit: bestFit,
+        ...themeMetaForKey(primaryKey),
+    };
+}
+
 function interventionsForTheme(themeKey) {
     return INTERVENTION_LIBRARY.filter(i => i.themes.includes(themeKey));
 }
@@ -2148,8 +2171,8 @@ function openModal(id) {
     }).join('');
 
     let intHtml = '';
-    selectNeighborhoodInterventions(worstThemes).forEach(({ theme, item }) => {
-        const meta = themeMetaForKey(theme.key);
+    selectNeighborhoodInterventions(worstThemes).forEach(({ item }) => {
+        const meta = primaryThemeForIntervention(item);
         intHtml += `
             <div class="hp-int-item">
                 <div class="hp-int-theme">${escapeHtml(meta.label)}</div>
@@ -2825,10 +2848,12 @@ function rankInterventionsByTheme(driverScores, topDrivers) {
             .forEach(item => {
                 if (used.has(item.id)) return;
                 used.add(item.id);
+                const primaryTheme = primaryThemeForIntervention(item);
                 picked.push({
                     ...item,
-                    theme: driver.label,
-                    color: driver.color,
+                    theme: primaryTheme.label,
+                    color: primaryTheme.color,
+                    primaryThemeKey: primaryTheme.key,
                     driverKey: driver.key,
                     driverScore: driver.score,
                     themeFitScore: interventionFitForTheme(item, driver.key),
@@ -2838,15 +2863,15 @@ function rankInterventionsByTheme(driverScores, topDrivers) {
 
     INTERVENTION_LIBRARY.forEach(item => {
         if (used.has(item.id)) return;
-        const key = item.themes[0];
-        const meta = themeMetaForKey(key);
+        const primaryTheme = primaryThemeForIntervention(item);
         picked.push({
             ...item,
-            theme: meta.label,
-            color: meta.color,
-            driverKey: key,
-            driverScore: driverScores[key] || 0,
-            themeFitScore: interventionFitForTheme(item, key),
+            theme: primaryTheme.label,
+            color: primaryTheme.color,
+            primaryThemeKey: primaryTheme.key,
+            driverKey: primaryTheme.key,
+            driverScore: driverScores[primaryTheme.key] || 0,
+            themeFitScore: primaryTheme.fit,
         });
     });
 
